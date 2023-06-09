@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: diplomdb
+      POSTGRES_USER: diplomeuser
+      POSTGRES_PASSWORD: dbpassword
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - dnetwork
+    ports:
+      - "25432:5432"
+
+networks:
+  dnetwork:
+
+volumes:
+  db-data:
