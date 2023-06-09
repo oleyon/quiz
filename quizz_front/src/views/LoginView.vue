@@ -23,7 +23,8 @@ export default {
     return {
       username: '',
       password: '',
-      responseStatus: ''
+      responseStatus: '',
+      errorMessage: ''
     };
   },
   methods: {
@@ -56,6 +57,7 @@ export default {
       })
       .catch(error => {
         this.responseStatus = 'error';
+        this.errorMessage = error.response.data.message;
         // Handle the error, e.g., show an error message
         console.log(error.response.data.message);
       });
