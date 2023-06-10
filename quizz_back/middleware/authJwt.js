@@ -4,8 +4,8 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
-
+  //let token = req.headers["x-access-token"];
+  let token = req.cookies.accessToken;
   if (!token) {
     return res.status(403).send({
       message: "No token provided!"
@@ -41,18 +41,18 @@ isAdmin = (req, res, next) => {
   });
 };
 
-isModerator = (req, res, next) => {
+isTeacher = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
+        if (roles[i].name === "преподаватель") {
           next();
           return;
         }
       }
 
       res.status(403).send({
-        message: "Require Moderator Role!"
+        message: "Require преподаватель Role!"
       });
     });
   });
@@ -60,9 +60,12 @@ isModerator = (req, res, next) => {
 
 isModeratorOrAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
+    if (!user) {
+      return res.status(404).send({ message: "User not found.", userId: req.userId });
+    }
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
+        if (roles[i].name === "преподаватель") {
           next();
           return;
         }
@@ -83,7 +86,7 @@ isModeratorOrAdmin = (req, res, next) => {
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
-  isModerator: isModerator,
+  isTeacher: isTeacher,
   isModeratorOrAdmin: isModeratorOrAdmin
 };
 module.exports = authJwt;

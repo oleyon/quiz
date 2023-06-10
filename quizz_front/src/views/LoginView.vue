@@ -34,22 +34,24 @@ export default {
       // Send username and password to the backend
 
       // Example using axios
+      //userDataService.test()
       userDataService.login({
         username: this.username,
         password: this.password
       })
       .then(response => {
         // Handle the response from the backend
-        const accessToken = response.data.accessToken;
+        //const accessToken = response.data.accessToken;
         // Save the access token to local storage
-        localStorage.setItem('accessToken', accessToken);
+        //localStorage.setItem('accessToken', accessToken);
         if (response.status === 200) {
             this.responseStatus = 'success';
 
             // Redirect to the homepage after a delay of 3 seconds
             setTimeout(() => {
+              this.$store.commit('login')
               this.redirectToHomePage();
-            }, 3000);
+            }, 500);
           } else {
             this.responseStatus = 'error';
             this.errorMessage = response.data.message;

@@ -2,9 +2,12 @@
   <div>
     <h2>Register</h2>
     <form @submit.prevent="register">
-      <input type="text" v-model="username" placeholder="Username" required>
-      <input type="email" v-model="email" placeholder="User email" required>
-      <input type="password" v-model="password" placeholder="Password" required>
+      <input type="text" v-model="username" placeholder="Логин" required>
+      <input type="text" v-model="name" placeholder="Имя" required>
+      <input type="text" v-model="surname" placeholder="Фамилия" required>
+      <input type="text" v-model="faculty" placeholder="Факультет" required>
+      <input type="email" v-model="email" placeholder="Почта" required>
+      <input type="password" v-model="password" placeholder="Пароль" required>
       <button type="submit">Register</button>
     </form>
 
@@ -25,6 +28,9 @@ export default {
   data() {
     return {
       username: '',
+      name: '',
+      surname: '',
+      faculty: '',
       email: '',
       password: '',
       responseStatus: null,
@@ -36,7 +42,9 @@ export default {
       userDataService.register({
         username: this.username,
         email: this.email,
-        role: 0,
+        name: this.name,
+        surname: this.surname,
+        faculty: this.faculty,
         password: this.password
       })
         .then(response => {
@@ -46,7 +54,7 @@ export default {
             // Redirect to the homepage after a delay of 3 seconds
             setTimeout(() => {
               this.redirectToHomePage();
-            }, 3000);
+            }, 1000);
           } else {
             this.responseStatus = 'error';
             this.errorMessage = response.data.message;

@@ -1,6 +1,37 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import UserDataService from './services/UserDataService';
+
+export default {
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    },
+    username() {
+      return this.$store.state.user.username;
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      // Perform any additional logout operations here
+    },
+  },
+  created() {
+    UserDataService.refreshToken()
+      .then(response => {
+          if (response.status === 200) {
+            this.$store.dispatch('login');
+            } else {
+              this.$store.dispatch('logout');
+            }
+        })
+        .catch(error => {
+          this.$store.dispatch('logout');
+        });
+  }
+};
 </script>
 
 <template>
@@ -16,8 +47,11 @@ import HelloWorld from './components/HelloWorld.vue'
           </div>
           
           <div class="right-links">
-            <RouterLink to="/register">Register</RouterLink>
-            <RouterLink to="/login">Login</RouterLink>
+            <div v-if="isAuthenticated">{{ username }}</div>
+            <router-link v-if="isAuthenticated" @click="logout" to="#">Выйти</router-link>
+            <router-link v-if="isAuthenticated" to="/createquiz">Создать квиз</router-link>
+            <router-link v-if="!isAuthenticated" to="/register">Регистрация</router-link>
+            <router-link v-if="!isAuthenticated" to="/login">Войти</router-link>
           </div>
         </nav>
       </div>

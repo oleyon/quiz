@@ -1,3 +1,4 @@
 module.exports = {
-  secret: "secret-key"
+  secret: "secret-key",
+  refreshSecret: "secret-key2"
 };
