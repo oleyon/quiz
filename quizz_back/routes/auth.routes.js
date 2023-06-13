@@ -27,8 +27,8 @@ module.exports = function(app) {
   app.post("/api/auth/refresh", controller.refreshToken);
 
   app.get("/api/auth/getuser",
-  [
-    verifyToken
-  ],
-   controller.getUser);
+    [
+      verifyToken
+    ],
+    controller.getUser);
 };

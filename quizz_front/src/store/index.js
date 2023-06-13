@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import userDataService from '../services/UserDataService';
+import notification from './notification';
 
 const store = createStore({
   state: {
@@ -57,6 +58,9 @@ const store = createStore({
       //   commit('logout');
       // }
     }
+  },
+  modules: {
+    notification
   }
 });
 

@@ -1,6 +1,6 @@
 //const { verifySignUp } = require("../middleware");
 const authJwt = require("../middleware/authJwt")
-const controller = require("../controllers/quiz.controller");
+const controller = require("../controllers/room.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -11,18 +11,11 @@ module.exports = function(app) {
     next();
   });
   app.post(
-    "/api/quiz/create",
-    [
-      authJwt.verifyToken,
-      // authJwt.isModeratorOrAdmin
-    ],
-    controller.create
-  );
-  app.get(
-    "/api/quiz/getall",
+    "/api/room/create",
     [
       authJwt.verifyToken
+    //   authJwt.isModeratorOrAdmin
     ],
-    controller.getAll
+    controller.create
   );
 };

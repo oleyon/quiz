@@ -5,8 +5,10 @@
     <h2>Create New Quiz</h2>
     <form @submit.prevent="createQuiz">
       <div>
-        <label>Title:</label>
+        <label>Название:</label>
         <input type="text" v-model="title" required />
+        <label>Описание:</label>
+        <input type="text" v-model="description" required />
       </div>
       <div v-for="(question, index) in questions" :key="index">
         <h4>Question {{ index + 1 }}</h4>
@@ -36,6 +38,7 @@ export default {
   data() {
     return {
       title: '',
+      description: '',
       questions: [
         {
           questionText: '',
@@ -66,6 +69,7 @@ export default {
     createQuiz() {
       const quizData = {
         title: this.title,
+        description: this.description,
         questions: this.questions.map(question => ({
           questionText: question.questionText,
           answers: question.answers.map((answer, index) => ({

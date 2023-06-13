@@ -128,9 +128,6 @@ exports.logout = (req, res) => {
 
 exports.getUser = (req, res) => {
   const userId = req.userId; // Assuming you have middleware that extracts the user ID from the token and sets it in the request object
-console.log("\n\n")
-console.log(userId)
-console.log("\n\n")
   User.findByPk(userId)
     .then(user => {
       if (!user) {

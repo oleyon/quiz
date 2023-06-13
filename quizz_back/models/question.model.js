@@ -1,7 +1,7 @@
-module.exports = (sequelize, DataTypes) => {
-    const Question = sequelize.define('Question', {
+module.exports = (sequelize, Sequelize) => {
+    const Question = sequelize.define('questions', {
       questionText: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false
       }
     });

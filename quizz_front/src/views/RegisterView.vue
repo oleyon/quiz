@@ -16,7 +16,7 @@
       <p>{{ errorMessage }}</p>
     </div>
     <div v-else-if="responseStatus === 'success'">
-      <p>Registration successful!</p>
+      <p>Успешная регистрация!</p>
     </div>
   </div>
 </template>
@@ -51,7 +51,6 @@ export default {
           if (response.status === 200) {
             this.responseStatus = 'success';
 
-            // Redirect to the homepage after a delay of 3 seconds
             setTimeout(() => {
               this.redirectToHomePage();
             }, 1000);

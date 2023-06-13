@@ -9,7 +9,7 @@ export default {
       return this.$store.state.isAuthenticated;
     },
     username() {
-      return this.$store.state.user.username;
+      return this.$store.state.user?.username;
     }
   },
   methods: {
@@ -38,18 +38,17 @@ export default {
   <div id="app">
     <header class="header">
       <div class="wrapper">
-        <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-        
         <nav>
           <div class="left-links">
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
+            <RouterLink to="/">Главная</RouterLink>
+            <RouterLink to="/about">О сайте</RouterLink>
           </div>
           
           <div class="right-links">
             <div v-if="isAuthenticated">{{ username }}</div>
-            <router-link v-if="isAuthenticated" @click="logout" to="#">Выйти</router-link>
             <router-link v-if="isAuthenticated" to="/createquiz">Создать квиз</router-link>
+            <router-link v-if="isAuthenticated" to="/room/create">Создать комнату</router-link>
+            <router-link v-if="isAuthenticated" @click="logout" to="#">Выйти</router-link>
             <router-link v-if="!isAuthenticated" to="/register">Регистрация</router-link>
             <router-link v-if="!isAuthenticated" to="/login">Войти</router-link>
           </div>
@@ -62,7 +61,6 @@ export default {
     </main>
 
     <footer class="footer">
-      <!-- Footer content goes here -->
     </footer>
   </div>
 </template>

@@ -31,6 +31,16 @@ const router = createRouter({
       path: '/createquiz',
       name: 'createquiz',
       component: () => import('../views/CreateQuizView.vue')
+    },
+    {
+      path: '/room/create',
+      name: 'createroom',
+      component: () => import('../views/CreateRoomView.vue')
+    },
+    {
+      path: '/room/join/:roomId',
+      name: 'room',
+      component: () => import('../views/RoomView.vue')
     }
   ]
 })

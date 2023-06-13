@@ -31,6 +31,9 @@ db.quiz = require('./quiz.model.js')(sequelize, Sequelize);
 db.question = require('./question.model.js')(sequelize, Sequelize);
 db.answer = require('./answer.model.js')(sequelize, Sequelize);
 
+db.room = require('./room.model.js')(sequelize, Sequelize);
+db.roomUser = require('./roomUser.model.js')(sequelize, Sequelize);
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -59,6 +62,15 @@ db.question.hasMany(db.answer, {
 db.quiz.hasMany(db.question, {
   onDelete: 'CASCADE'
 });
+
+db.user.hasOne(db.room)
+db.room.belongsTo(db.user)
+db.user.hasMany(db.roomUser)
+db.roomUser.belongsTo(db.user)
+db.room.hasMany(db.roomUser)
+db.roomUser.belongsTo(db.room)
+db.quiz.hasOne(db.room)
+db.room.belongsTo(db.quiz)
 
 db.ROLES = ["user", "admin", "moderator"];
 
