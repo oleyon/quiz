@@ -4,14 +4,12 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  //let token = req.headers["x-access-token"];
   let token = req.cookies.accessToken;
   if (!token) {
     return res.status(403).send({
       message: "No token provided!"
     });
   }
-
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
@@ -32,7 +30,6 @@ isAdmin = (req, res, next) => {
           return;
         }
       }
-
       res.status(403).send({
         message: "Require Admin Role!"
       });
@@ -52,16 +49,16 @@ isTeacher = (req, res, next) => {
       }
 
       res.status(403).send({
-        message: "Require преподаватель Role!"
+        message: "Необходима роль преподавателя!"
       });
     });
   });
 };
 
-isModeratorOrAdmin = (req, res, next) => {
+isTeacherOrAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     if (!user) {
-      return res.status(404).send({ message: "User not found.", userId: req.userId });
+      return res.status(404).send({ message: "Пользователь не найден", userId: req.userId });
     }
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
@@ -69,15 +66,13 @@ isModeratorOrAdmin = (req, res, next) => {
           next();
           return;
         }
-
         if (roles[i].name === "admin") {
           next();
           return;
         }
       }
-
       res.status(403).send({
-        message: "Require Moderator or Admin Role!"
+        message: "Недостаточно прав для совершения действия!"
       });
     });
   });
@@ -87,6 +82,6 @@ const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isTeacher: isTeacher,
-  isModeratorOrAdmin: isModeratorOrAdmin
+  isTeacherOrAdmin: isTeacherOrAdmin
 };
 module.exports = authJwt;

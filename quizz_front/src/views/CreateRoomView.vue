@@ -9,7 +9,7 @@
         <input type="пароль" v-model="password" placeholder="Пароль (по желанию)"/>
       </div>
       <div>
-        <select v-model="selectedQuiz">
+        <select v-model="selectedQuiz" required>
           <option v-for="quiz in quizzes" :key="quiz.id" :value="quiz.id">{{ quiz.title }}</option>
         </select>
       </div>
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       quizzes: [],
-      selectedQuiz: null,
+      selectedQuiz: 0,
       title: '',
       numberOfTeams: 1,
       quizTime: 60,
@@ -61,7 +61,7 @@ export default {
         .then((response) => {
           // Room created successfully
           if (response.status === 201)
-            this.$router.push('/'); // Redirect to room, TODO
+            this.$router.push(`/room?roomId=${response.data.data.id}&password=${encodeURIComponent(this.password)}`);
           else
             console.log("Что то пошло не так при создании комнаты")
         })

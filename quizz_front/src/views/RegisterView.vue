@@ -16,7 +16,7 @@
       <p>{{ errorMessage }}</p>
     </div>
     <div v-else-if="responseStatus === 'success'">
-      <p>Успешная регистрация!</p>
+      <p>Успешная регистрация! Возврат на главную</p>
     </div>
   </div>
 </template>

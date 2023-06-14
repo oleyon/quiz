@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
       name: {
         type: Sequelize.INTEGER
       },
-    });
+    }, {timestamps: false,});
   
     return UserAnswer;
   };

@@ -1,4 +1,3 @@
-//const { verifySignUp } = require("../middleware");
 const authJwt = require("../middleware/authJwt")
 const controller = require("../controllers/quiz.controller");
 
@@ -14,7 +13,7 @@ module.exports = function(app) {
     "/api/quiz/create",
     [
       authJwt.verifyToken,
-      // authJwt.isModeratorOrAdmin
+      authJwt.isTeacherOrAdmin
     ],
     controller.create
   );

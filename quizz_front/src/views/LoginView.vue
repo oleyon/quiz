@@ -1,16 +1,16 @@
 <template>
   <div>
-    <h2>Login</h2>
+    <h2>Вход</h2>
     <form @submit.prevent="login">
-      <input type="text" v-model="username" placeholder="Username" required>
-      <input type="password" v-model="password" placeholder="Password" required>
-      <button type="submit">Login</button>
+      <input type="text" v-model="username" placeholder="Имя пользователя" required>
+      <input type="password" v-model="password" placeholder="Пароль" required>
+      <button type="submit">Войти</button>
     </form>
     <div v-if="responseStatus === 'error'">
       <p>{{ errorMessage }}</p>
     </div>
     <div v-else-if="responseStatus === 'success'">
-      <p>Login successful, redirecting...</p>
+      <p>Успешный вход. Возврат на глувную...</p>
     </div>
   </div>
 </template>
@@ -29,25 +29,14 @@ export default {
   },
   methods: {
     login() {
-      // Make an API call to your backend to authenticate the user and get the access token
-      // Use axios or any other HTTP library of your choice
-      // Send username and password to the backend
-
-      // Example using axios
-      //userDataService.test()
       userDataService.login({
         username: this.username,
         password: this.password
       })
       .then(response => {
-        // Handle the response from the backend
-        //const accessToken = response.data.accessToken;
-        // Save the access token to local storage
-        //localStorage.setItem('accessToken', accessToken);
         if (response.status === 200) {
             this.responseStatus = 'success';
-
-            // Redirect to the homepage after a delay of 3 seconds
+            // Redirect to the homepage after a delay of 0.5 seconds
             setTimeout(() => {
               this.$store.commit('login')
               this.redirectToHomePage();

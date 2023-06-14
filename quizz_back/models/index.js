@@ -65,9 +65,14 @@ db.quiz.hasMany(db.question, {
 
 db.user.hasOne(db.room)
 db.room.belongsTo(db.user)
-db.user.hasMany(db.roomUser)
-db.roomUser.belongsTo(db.user)
+
+db.user.belongsToMany(db.room, { through: db.roomUser })
+db.room.belongsToMany(db.user, { through: db.roomUser })
 db.room.hasMany(db.roomUser)
+db.user.hasMany(db.roomUser)
+// db.user.hasMany(db.roomUser)
+db.roomUser.belongsTo(db.user)
+// db.room.hasMany(db.roomUser)
 db.roomUser.belongsTo(db.room)
 db.quiz.hasOne(db.room)
 db.room.belongsTo(db.quiz)

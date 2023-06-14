@@ -11,11 +11,10 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
   }).then(user => {
     if (user) {
       res.status(400).send({
-        message: "Failed! Username is already in use!"
+        message: "Ошибка! Пользователь с таким именем уже существует"
       });
       return;
     }
-
     // Email
     User.findOne({
       where: {
@@ -24,7 +23,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
     }).then(user => {
       if (user) {
         res.status(400).send({
-          message: "Failed! Email is already in use!"
+          message: "Ошибка! Электронная почта уже занята"
         });
         return;
       }
@@ -39,13 +38,12 @@ checkRolesExisted = (req, res, next) => {
     for (let i = 0; i < req.body.roles.length; i++) {
       if (!ROLES.includes(req.body.roles[i])) {
         res.status(400).send({
-          message: "Failed! Role does not exist = " + req.body.roles[i]
+          message: "Ошибка! Роль не существует = " + req.body.roles[i]
         });
         return;
       }
     }
   }
-  
   next();
 };
 

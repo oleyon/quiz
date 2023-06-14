@@ -1,7 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
   const Room = sequelize.define("rooms", {
     title: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     numberOfTeams: {
       type: Sequelize.INTEGER
@@ -20,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false
     }
-  });
+  }, {timestamps: false,});
 
   return Room;
 };

@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
+var bcrypt = require("bcryptjs");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 // database
 const db = require("./models");
 const Role = db.role;
+const User = db.user;
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists
@@ -36,19 +38,9 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to backend." });
 });
 
-// app.get('/api/set-cookie', (req, res) => {
-//   res.cookie('testCookie', 'testValue1', { httpOnly: true });
-//   res.send('Cookie set successfully');
-// });
-
-// routes
 require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);
 require('./routes/quiz.routes')(app);
 require('./routes/room.routes')(app);
-
-
-
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -61,14 +53,38 @@ function initial() {
     id: 1,
     name: "студент"
   });
- 
+
   Role.create({
     id: 2,
     name: "преподаватель"
   });
- 
+
   Role.create({
     id: 3,
-    name: "admin"
+    name: "админ"
   });
+
+  User.create({
+    username: "teacher1",
+    name: "Иван",
+    surname: "Иванов",
+    faculty: "факультет1",
+    email: "ivanov_ivan@mail.ru",
+    password: bcrypt.hashSync("qwerty", 8)
+  })
+  .then(user => {
+    user.setRoles(2)
+  })
+
+  User.create({
+    username: "student1",
+    name: "Александр",
+    surname: "Иванов",
+    faculty: "факультет2",
+    email: "ivanov_alex@mail.ru",
+    password: bcrypt.hashSync("qwerty", 8)
+  })
+  .then(user => {
+    user.setRoles(1)
+  })
 }
