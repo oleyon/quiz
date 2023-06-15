@@ -17,7 +17,6 @@ exports.getRoomData = async (req, res) => {
   try {
     const { roomId } = req.params;
     const password = req.query.password;
-    console.log("roomId = " + roomId)
     const room = await Room.findOne({
       where: {id: roomId},
       include: [{ model: db.roomUser, attributes: ['score', 'teamNumber', 'currentQuestion'], include: [{ model: db.user, attributes: ['username']}] }]
@@ -185,13 +184,19 @@ exports.joinTeam = async (req, res) => {
     if(!userRoom) {
       userRoom = await user.addRoom(room, { through: {score: 0, teamNumber: 0, currentQuestion: 0} })
     }
-    userRoom.update({teamNumber: teamId}, {
-      where: {
-        userId: userId,
-        roomId: roomId
-      }
-    })
-    res.status(200).json({ message: 'Пользователь присоединился к команде' });
+    if(!userRoom.startTime) {
+      userRoom.update({teamNumber: teamId}, {
+        where: {
+          userId: userId,
+          roomId: roomId
+        }
+      })
+      res.status(200).json({ message: 'Пользователь присоединился к команде' });
+    }
+    else {
+      res.status(200).json({ message: 'Игра уже началась' });
+    }
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Не удалось найти комнату' });

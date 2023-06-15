@@ -3,9 +3,19 @@
     <h2>Создать комнату</h2>
     <form @submit.prevent="createRoom">
       <div>
+        <div>
+          Название комнаты
+        </div>
         <input type="text" v-model="title" placeholder="Название" required />
+        <div>
+          Количество команд
+        </div>
         <input type="number" v-model="numberOfTeams" placeholder="кол-во команд" required />
+        <div>
+          Время на выполнение квеста
+        </div>
         <input type="number" v-model="quizTime" placeholder="Длительность квиза (с)" required />
+        Пароль комнаты
         <input type="пароль" v-model="password" placeholder="Пароль (по желанию)"/>
       </div>
       <div>

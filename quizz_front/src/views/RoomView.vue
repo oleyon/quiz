@@ -18,6 +18,7 @@
     <div>
       <TeamInfo :teamUsers="getTeamInfo" @joinedTeam="joinTeam"/>
     </div>
+    <button @click="joinSpectator" v-if="!hasQuizStarted">Стать наблюдателем</button>
   </div>
 </template>
 
@@ -50,6 +51,11 @@ export default {
     isUserCreator() {
       return this.$store.state.user?.id == this.roomInfo.userId;
     },
+    isUserSpectator() {
+      const username = this.$store.state.user?.username;
+      const user = this.roomInfo.room_users.find(user => user.username === username);
+      return user && user.teamNumber == 0;
+    },
     hasQuizStarted() {
       return this.roomInfo?.startTime ?? false
     },
@@ -67,7 +73,6 @@ export default {
       .joinRoom(this.roomId, this.password)
       .then(response => {
         this.getRoomData();
-        //this.getCurrentQuestion() // TODO
       }
       )
       .catch(error => {
@@ -89,6 +94,9 @@ export default {
     },
     joinTeam(teamId) {
       RoomDataService.joinTeam(teamId, this.roomId, this.password)
+    },
+    joinSpectator() {
+      this.joinTeam(0);
     },
     startQuiz() {
       RoomDataService.startQuiz(this.roomId)
@@ -148,7 +156,8 @@ export default {
   watch: {
     hasQuizStarted(newVal) {
       if (newVal) {
-        this.getCurrentQuestion();
+        if(!this.isUserSpectator)
+          this.getCurrentQuestion();
       }
     }
   }
