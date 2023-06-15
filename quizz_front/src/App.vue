@@ -70,24 +70,12 @@ export default {
 
 
 <style lang="less">
-@import "../themevars.less";
+@import "../common_styles.less";
 #app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
-.header {
-  background: @bg2;
-  color: @t1;
-  padding: 20px;
-}
-
-.wrapper {
-  max-width: 960px;
-  margin: 0 auto;
-}
-
 nav {
   display: flex;
   justify-content: space-between;
@@ -101,7 +89,7 @@ nav {
 }
 
 nav a {
-  color: @t1;
+  color: @text1;
   text-decoration: none;
 }
 
@@ -111,10 +99,22 @@ nav a {
   background: @bg1;
 }
 
+.header {
+    background: @bg2;
+    color: @text1;
+    padding: 20px;
+  }
+  
+  .wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  
 .footer {
-  background: @bg2;
-  padding: 20px;
-}
+    background: @bg2;
+    padding: 20px;
+  }
+
 
 *::-webkit-scrollbar {
   
@@ -127,7 +127,8 @@ nav a {
 
 *::-webkit-scrollbar-track {
   width: 20px;
-  background: transparent;
+  background: @scroll-track;
+  border-radius: 5px;
   //background: @bg1;
   scrollbar-width: none;
 }

@@ -1,0 +1,116 @@
+@import "theme_dark.less";
+
+@title1_size: 24px;
+@title2_size: 20px;
+@title3_size: 18px;
+
+@text1_size: 18px;
+@text2_size: 16px;
+@text3_size: 14px;
+
+
+.central {
+    align-content: center;
+    text-align: center;
+
+}
+
+
+.main1 {
+
+    height: 83vh;
+    width: 90vw;
+    background: @div1;
+    border-radius: 30px;
+    margin: auto;
+
+    padding: 2px 8px;
+
+
+    h1, h2 {
+        color: @title1;
+        font: bold @title1_size;
+    }
+
+    a, label, span, h3, h4 {
+        color: @text1;
+        font: @text1_size;
+    }
+    
+    button {
+        background-color: @div2;
+    }
+}
+
+.level1 {
+    //background-color: transparent;
+
+    h1, h2 {
+        color: @title1;
+        font-size: @title1_size;
+    }
+
+    a, label, span, h3, h4, input {
+        color: @text1;
+        font-size: @text1_size;
+    }
+}
+
+.level2
+{
+    //background-color: @div2;
+
+    h1, h2 {
+        color: @title2;
+        font-size: @title2_size;
+    }
+
+    a, label, span, h3, h4, input {
+        color: @text2;
+        font-size: @text2_size;
+    }
+}
+
+.level3
+{
+
+    h1, h2 {
+        color: @title3;
+        font-size: @title3_size;
+    }
+
+    a, label, span, h3, h4 {
+        color: @text3;
+        font-size: @text3_size;
+    }
+}
+
+button {
+    background: @button1bg;
+    color: @button1text;
+    border: solid 2px @div1;
+    border-radius: 8px;
+
+}
+
+input {
+    padding: 2px 10px;
+    border-radius: 10px;
+    min-height: 22px;
+    border: 2px solid #2e2d2d2f;
+    font-size: 15px;
+    color: @input1text;
+    background: @input1bg;
+  }
+
+select {
+    border-radius: 5px;
+    min-height: 25px;
+    padding: 5px;
+    color: @select1text;
+    background: @select1bg;
+  }
+
+::-webkit-input-placeholder {
+    color: @accent2;
+}

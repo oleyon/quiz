@@ -1,39 +1,51 @@
 <template>
-  <div class="quiz">
-    <h2>Создать новый квиз</h2>
+  <div class="central main1">
     <form @submit.prevent="createQuiz">
-      <div>
-        <label>Название:</label>
-        <input type="text" v-model="title" required />
-        <label>Описание:</label>
-        <input type="text" v-model="description" required />
-      </div>
-      <div
-        v-for="(question, index) in questions"
-        :key="index"
-        class="quiz__room"
-      >
-        <h4 class="quiz__question__title">Вопрос {{ index + 1 }}</h4>
-        <input type="text" v-model="question.questionText" placeholder="Вопрос" required class="quiz__question" />
-        <br>
-        <input type="text" v-model="question.answers[0].answerText" placeholder="Ответ 1" required />
-        <input type="text" v-model="question.answers[1].answerText" placeholder="Ответ 2" required />
-        <input type="text" v-model="question.answers[2].answerText" placeholder="Ответ 3" required />
-        <input type="text" v-model="question.answers[3].answerText" placeholder="Ответ 4" required />
-        <br>
-        <div class="quiz__answer-field">
-          <label>Правильный ответ:</label>
-          <select v-model="question.correctAnswerIndex" required>
-            <option value="0">Ответ 1</option>
-            <option value="1">Ответ 2</option>
-            <option value="2">Ответ 3</option>
-            <option value="3">Ответ 4</option>
-          </select>
+      <div class="level1"
+      style="height: 9vh">
+        <h2>Создать новый квиз</h2>
+        <div>
+          <label>Название:</label>
+          <input type="text" v-model="title" required />
+          <label>Описание:</label>
+          <input type="text" v-model="description" required />
         </div>
       </div>
+    <div class="central level2"
+    style="height: 65vh; overflow-y: scroll; padding: 10px 0px"
+    >
+
+        <div
+          v-for="(question, index) in questions"
+          :key="index"
+          class="quiz__question-area level2"
+        >
+          <h2>Вопрос {{ index + 1 }}</h2>
+          <input type="text" v-model="question.questionText" placeholder="Вопрос" required class="quiz__question" />
+          <br>
+          <input class="quiz__answer" type="text" v-model="question.answers[0].answerText" placeholder="Ответ 1" required />
+          <input class="quiz__answer" type="text" v-model="question.answers[1].answerText" placeholder="Ответ 2" required />
+          <input class="quiz__answer" type="text" v-model="question.answers[2].answerText" placeholder="Ответ 3" required />
+          <input class="quiz__answer" type="text" v-model="question.answers[3].answerText" placeholder="Ответ 4" required />
+          <br>
+          <div class="quiz__answer-field">
+            <label class="quiz__label ">Правильный ответ:</label>
+            <select v-model="question.correctAnswerIndex" required>
+              <option value="0">Ответ 1</option>
+              <option value="1">Ответ 2</option>
+              <option value="2">Ответ 3</option>
+              <option value="3">Ответ 4</option>
+            </select>
+          </div>
+        </div>
+    </div>
+  </form>
+
+    <div class= "central level1"
+    style="margin-top: 0.5vh">
       <button class="quiz__button" type="button" @click="addQuestion">Добавить вопрос</button>
       <button class="quiz__button" type="submit">Создать квиз</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -106,82 +118,51 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../themevars.less";
+@import "../../common_styles.less";
+
 .quiz{
-  align-content: center;
-  text-align: center;
-
-  background: @d1;
-  color: @t1;
-  border-radius: 30px;
-  width: 90vw;
-  height: 84vh;
-  max-height: 70%;
-  overflow-y: scroll;
-  //margin-left: 5%;
-  margin: auto;
-  padding-bottom: 10px;
-
-  &__room {
-    align-content: center;
-    text-align: center;
-    margin-left: 10%;
-
-    background: @d2;
-    color: @t2;
+  &__question-area {
+    background: @div2;
+    border-radius: 18px;
     width: 80%;
+    margin-left: 10%;
+    margin-bottom: 10px;
+    padding: 1px 0px 13px 0px;
     min-height: fit-content;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
   }
+
   &__question {
-    width: 30%;
-    height: 50px;
+    width: 35%;
+    min-height: 50px;
+    overflow: scroll;
     margin-bottom: 10px;
-    //rewrite to normal names
-    &__title{
-      padding-top: 10px;
-      color: @t1;
-    }
-    &__cringe{
-      color:black;
-    }
   }
+
+  &__answer {
+    margin: 0px 5px;
+  }
+
   &__button {
     width: 150px;
     height: 30px;
-    background-color: @d2;
-    color: @t1;
-    border: solid 2px @d1;
+    background-color: @div2;
+    color: @text1;
+    border: solid 2px @div1;
     border-radius: 8px;
     margin: 2px 7px 2px 7px;
   }
+
   &__answer-field {
     margin-top: 10px;
-    color: @t3;
-    label {
-      color: @t1;
-    }
   }
 
-}
-label {
+  &__label {
+  font-size: 18px;
+  font-size: @text1_size;
   padding: 0px 5px;
+  }
 }
-input {
-  padding: 2px 10px;
-  border-radius: 10px;
-  min-height: 22px;
-  border: 2px solid #2e2d2d2f;
-  font-size: 15px;
-  color: @t3;
-  background: @d3
-}
-select {
-  border-radius: 5px;
-  min-height: 25px;
-  padding: 5px;
-  background: @d3;
-}
+
+
+
 </style>
