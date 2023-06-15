@@ -25,7 +25,7 @@ const state = {
     
       for (let i = 0; i < teamsCount; i++) {
         let team = {
-          teamNumber: i,
+          teamNumber: i + 1,
           users: [],
           totalScore: 0,
         };
@@ -34,19 +34,20 @@ const state = {
       teamUsers.forEach((teamUser) => {
         const { score, teamNumber, user } = teamUser;
         const { username } = user;
-    
-        let team = teams.find((t) => t.teamNumber === teamNumber);
-        if (!team) {
-          team = {
-            teamNumber,
-            users: [],
-            totalScore: 0,
-          };
-          teams.push(team);
+        if(teamNumber>0) {
+          let team = teams.find((t) => t.teamNumber === teamNumber);
+          if (!team) {
+            team = {
+              teamNumber,
+              users: [],
+              totalScore: 0,
+            };
+            teams.push(team);
+          }
+      
+          team.users.push({ username, score });
+          team.totalScore += score;
         }
-    
-        team.users.push({ username, score });
-        team.totalScore += score;
       });
 
       commit('setTeams', teams);

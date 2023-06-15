@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Вход</h2>
-    <form @submit.prevent="login">
+    <form @submit.prevent="performLogin">
       <input type="text" v-model="username" placeholder="Имя пользователя" required>
       <input type="password" v-model="password" placeholder="Пароль" required>
       <button type="submit">Войти</button>
@@ -17,6 +17,7 @@
 
 <script>
 import userDataService from '../services/UserDataService';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -28,17 +29,18 @@ export default {
     };
   },
   methods: {
-    login() {
+    ...mapActions(['login']),
+    performLogin() {
       userDataService.login({
         username: this.username,
         password: this.password
       })
       .then(response => {
-        if (response.status === 200) {
+        if (response.status == 200) {
             this.responseStatus = 'success';
             // Redirect to the homepage after a delay of 0.5 seconds
             setTimeout(() => {
-              this.$store.commit('login')
+              this.login();
               this.redirectToHomePage();
             }, 500);
           } else {

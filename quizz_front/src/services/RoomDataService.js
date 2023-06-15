@@ -5,20 +5,30 @@ class RoomDataService {
     return http.post("/room/create", data, { withCredentials: true });
   }
   getRoomData(roomId, password) {
-    return http.get("/room/getroomdata", { params: { roomId: roomId, password: password }, withCredentials: true });
+    return http.get(`/room/${roomId}/getroomdata`, { params: { password: password }, withCredentials: true });
   }
   joinRoom(roomId, password) {
-    return http.post("/room/join", {}, { params: { roomId: roomId, password: password }, withCredentials: true });
+    return http.post(`/room/${roomId}/join`, {}, { params: { password: password }, withCredentials: true });
   }
   getCurrentQuestion(roomId, password) {
-    return http.get("/room/getcurrentquestion", { params: { roomId: roomId, password: password }, withCredentials: true });
+    return http.get(`/room/${roomId}/getcurrentquestion`, { params: { password: password }, withCredentials: true });
   }
   sendAnswer(answerId, roomId, password) {
-    return http.post("/room/sendanswer", {answerId}, { params: { roomId: roomId, password: password }, withCredentials: true });
+    return http.post(`/room/${roomId}/sendanswer`, {answerId}, { params: { password: password }, withCredentials: true });
   }
   joinTeam(teamId, roomId, password) {
-    return http.post("/room/team/join", {teamId}, { params: { roomId: roomId, password: password }, withCredentials: true });
+    return http.post(`/room/${roomId}/team/${teamId}/join`, {}, { params: { password: password }, withCredentials: true });
   }
+  startQuiz(roomId) {
+    return http.post(`/room/${roomId}/startquiz`, {}, {withCredentials: true });
+  }
+  getActiveRooms() {
+    return http.get(`/room/getactiverooms`);
+  }
+
+  // isUserCreator(roomId) {
+  //   return http.get(`/room/${roomId}/isUserCreator`, {withCredentials: true });
+  // }
 }
 
 export default new RoomDataService();

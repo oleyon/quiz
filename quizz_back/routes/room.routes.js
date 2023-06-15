@@ -18,38 +18,49 @@ module.exports = function(app) {
     controller.create
   );
   app.get(
-    "/api/room/getroomdata",
+    "/api/room/:roomId/getroomdata",
     [
       authJwt.verifyToken
     ],
     controller.getRoomData
   );
   app.post(
-    "/api/room/join",
+    "/api/room/:roomId/join",
     [
       authJwt.verifyToken
     ],
     controller.joinRoom
   );
   app.get(
-    "/api/room/getcurrentquestion",
+    "/api/room/:roomId/getcurrentquestion",
     [
       authJwt.verifyToken
     ],
     controller.getCurrentQuestion
   );
   app.post(
-    "/api/room/sendanswer",
+    "/api/room/:roomId/sendanswer",
     [
       authJwt.verifyToken
     ],
     controller.sendAnswer
   );
   app.post(
-    "/api/room/team/join",
+    "/api/room/:roomId/team/:teamId/join",
     [
       authJwt.verifyToken
     ],
     controller.joinTeam
+  );
+  app.get(
+    "/api/room/getactiverooms",
+    controller.getActiveRooms
+  );
+  app.post(
+    "/api/room/:roomId/startquiz",
+    [
+      authJwt.verifyToken
+    ],
+    controller.startQuiz
   );
 };

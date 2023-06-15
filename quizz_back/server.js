@@ -25,6 +25,9 @@ app.use(cookieParser());
 const db = require("./models");
 const Role = db.role;
 const User = db.user;
+const Quiz = db.quiz;
+const Question = db.question
+const Answer = db.answer
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists
@@ -48,23 +51,23 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-function initial() {
-  Role.create({
+async function initial() {
+  await Role.create({
     id: 1,
     name: "студент"
   });
 
-  Role.create({
+  await Role.create({
     id: 2,
     name: "преподаватель"
   });
 
-  Role.create({
+  await Role.create({
     id: 3,
     name: "админ"
   });
 
-  User.create({
+  await User.create({
     username: "teacher1",
     name: "Иван",
     surname: "Иванов",
@@ -76,7 +79,7 @@ function initial() {
     user.setRoles(2)
   })
 
-  User.create({
+  await User.create({
     username: "student1",
     name: "Александр",
     surname: "Иванов",
@@ -87,4 +90,84 @@ function initial() {
   .then(user => {
     user.setRoles(1)
   })
+
+  await Quiz.create({
+    title: "quiz1",
+    description: "testquiz1",
+  })
+
+  await Question.create({
+    questionText: "q1",
+    quizId: 1,
+  })
+  await Question.create({
+    questionText: "q2",
+    quizId: 1,
+  })
+  await Question.create({
+    questionText: "q3",
+    quizId: 1,
+  })
+  
+  Answer.create({
+    answerText: "1",
+    isCorrect: false,
+    questionId: 1,
+  })
+  Answer.create({
+    answerText: "2",
+    isCorrect: true,
+    questionId: 1,
+  })
+  Answer.create({
+    answerText: "3",
+    isCorrect: false,
+    questionId: 1,
+  })
+  Answer.create({
+    answerText: "4",
+    isCorrect: false,
+    questionId: 1,
+  })
+  Answer.create({
+    answerText: "q",
+    isCorrect: false,
+    questionId: 2,
+  })
+  Answer.create({
+    answerText: "w",
+    isCorrect: false,
+    questionId: 2,
+  })
+  Answer.create({
+    answerText: "e",
+    isCorrect: false,
+    questionId: 2,
+  })
+  Answer.create({
+    answerText: "r",
+    isCorrect: true,
+    questionId: 2,
+  })
+  Answer.create({
+    answerText: "z",
+    isCorrect: true,
+    questionId: 3,
+  })
+  Answer.create({
+    answerText: "x",
+    isCorrect: false,
+    questionId: 3,
+  })
+  Answer.create({
+    answerText: "c",
+    isCorrect: false,
+    questionId: 3,
+  })
+  Answer.create({
+    answerText: "v",
+    isCorrect: false,
+    questionId: 3,
+  })
+
 }

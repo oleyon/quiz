@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="question!=={}">
     <h2>{{ question.questionText }}</h2>
     <div>
       <button v-for="answer in question.answers" :key="answer.id" @click="selectAnswer(answer.id)">

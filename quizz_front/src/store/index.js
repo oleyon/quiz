@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
 import userDataService from '../services/UserDataService';
-import notification from './notification';
 import team from './teams';
 
 const store = createStore({
@@ -12,6 +11,7 @@ const store = createStore({
     login(state, user) {
       state.isAuthenticated = true;
       state.user = user;
+
     },
     logout(state) {
       state.isAuthenticated = false;
@@ -31,21 +31,20 @@ const store = createStore({
       }
     },
     async login({ commit }) {
-      userDataService.getUser()
-      .then(response => {
+      try {
+        const response = await userDataService.getUser();
         if (response.status === 200) {
           commit('login', response.data);
-          } else {
-            commit('logout')
-          }
-      })
-      .catch(error => {
-        commit('logout')
-      });
+        } else {
+          commit('logout');
+        }
+      } catch (error) {
+        // Handle error if necessary
+        commit('logout');
+      }
     }
   },
   modules: {
-    notification,
     team
   }
 });

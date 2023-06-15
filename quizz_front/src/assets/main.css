@@ -35,4 +35,47 @@ a,
 } */
 body {
   margin: 0;
+  overflow: overlay;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-links,
+.right-links {
+  display: flex;
+  gap: 10px;
+}
+
+nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+.main {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.footer {
+  background-color: #f1f1f1;
+  padding: 20px;
 }
