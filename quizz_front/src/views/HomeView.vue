@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <h2>Активные комнаты</h2>
-    <div v-for="room in rooms" :key="room.id">
-      <h3>{{ room.title }}</h3>
-      <p>Количество команд: {{ room.numberOfTeams }}</p>
-      <p>Название квиза: {{ room.quiz.title }}</p>
-      <p>Описание квиза: {{ room.quiz.description }}</p>
+  <div class="central level1">
+    <h2 class="central">Активные комнаты</h2>
+    <div class="room__room-area level2" v-for="room in rooms" :key="room.id">
+      <h2>{{ room.title }}</h2>
+      <h3 style="font-size: 22px;">Количество команд: &nbsp {{ room.numberOfTeams }}</h3>
+      <h3 style="font-size: 22px;">Название квиза: &nbsp {{ room.quiz.title }}</h3>
+      <h3 style="font-size: 22px;">Описание квиза: &nbsp {{ room.quiz.description }}</h3>
       <button @click="joinRoom(room.id)">Войти</button>
-      <hr />
     </div>
     <PasswordModal v-if="isModalOpen" @passwordEntered="handlePasswordEntered" @close="closeModal"></PasswordModal>
   </div>
@@ -60,3 +59,25 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+@import "../../common_styles.less";
+
+.room{
+  &__room-area {
+    background: @div2;
+    border-radius: 18px;
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 10px;
+    padding: 20px;
+    min-height: fit-content;
+  }
+  &__caption {
+    font-size: 22px;
+  }
+}
+.caption {
+  font-size: x-large;
+}
+</style>

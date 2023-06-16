@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <button @click="startQuiz()">
+      <button class="creator-button" @click="startQuiz()">
         Начать квиз
       </button>
     </div>
@@ -17,3 +17,10 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.creator-button {
+  font-size: 50px;
+  margin-top: 10px;
+}
+</style>

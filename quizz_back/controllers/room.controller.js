@@ -5,6 +5,12 @@ exports.create = async (req, res) => {
   try {
     const roomreq = req.body;
     roomreq.userId = req.userId;
+    if(roomreq.numberOfTeams < 1) {
+      roomreq.numberOfTeams = 1;
+    }
+    if(roomreq.quizTime < 1) {
+      roomreq.quizTime = 60;
+    }
     const room = await Room.create(roomreq);
     res.status(201).json({data: room, message: 'Комната успешно создана' });
   } catch (error) {
@@ -88,18 +94,21 @@ exports.getCurrentQuestion = async (req, res) => {
     const userRoom = await db.roomUser.findOne({
       where: { userId: userId, roomId: roomId },
     });
+    if (userRoom.teamNumber == 0) {
+      return res.status(200).json()
+    }
     if (!userRoom) {
       // User is not associated with the room
       return res.status(404).json({ message: 'Пользователь не присоединен к комнате' });
     }
     const remainingTime = calculateTimeLeft(room.startTime, room.quizTime * 1000)
     if(remainingTime < 0) {
-      res.status(200).json()
+      return res.status(200).json()
     }
     else {
       index = userRoom.currentQuestion;
       question = room.quiz.questions[index]
-      res.status(200).json(question);
+      return res.status(200).json(question);
     }
   } catch (error) {
     console.error(error);
@@ -113,7 +122,6 @@ exports.sendAnswer = async (req, res) => {
     const password = req.query.password;
     const userId = req.userId;
     const answerId = req.body.answerId;
-    console.log(`answerId = ${answerId}`)
     const room = await Room.findByPk(roomId, {
       include: [
         {
@@ -152,7 +160,6 @@ exports.sendAnswer = async (req, res) => {
       if (answer.isCorrect) {
         userRoom.increment('score', { by: 1 });
       }
-      console.log(`answer = ${answer}`)
       await userRoom.increment('currentQuestion', { by: 1 });
       await userRoom.save();
       index = userRoom.currentQuestion;
@@ -181,10 +188,11 @@ exports.joinTeam = async (req, res) => {
     const userRoom = await db.roomUser.findOne({
       where: { userId: userId, roomId: roomId },
     });
+    // TODO
     if(!userRoom) {
       userRoom = await user.addRoom(room, { through: {score: 0, teamNumber: 0, currentQuestion: 0} })
     }
-    if(!userRoom.startTime) {
+    if(room.startTime == null) {
       userRoom.update({teamNumber: teamId}, {
         where: {
           userId: userId,
@@ -206,7 +214,7 @@ exports.joinTeam = async (req, res) => {
 exports.getActiveRooms = async (req, res) => {
   try {
     rooms = await Room.findAll({
-      where: {startTime: null},
+      where: {isFinished: false},
       attributes: ['id', 'title', 'numberOfTeams'],
       include: {
         model: db.quiz,

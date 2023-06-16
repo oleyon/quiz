@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Вход</h2>
+  <div class="main1 central login">
+    <h1>Вход</h1>
     <form @submit.prevent="performLogin">
       <input type="text" v-model="username" placeholder="Имя пользователя" required>
       <input type="password" v-model="password" placeholder="Пароль" required>
@@ -10,7 +10,7 @@
       <p>{{ errorMessage }}</p>
     </div>
     <div v-else-if="responseStatus === 'success'">
-      <p>Успешный вход. Возврат на глувную...</p>
+      <h2>Успешный вход. Возврат на главную...</h2>
     </div>
   </div>
 </template>
@@ -61,3 +61,11 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.login {
+  height: fit-content;
+  width: fit-content;
+  padding: 40px;
+}
+</style>

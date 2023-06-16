@@ -1,9 +1,9 @@
 <template>
   <div class="modal" @click="closeModal">
-    <div class="modal-content" @click.stop>
-      <h2>Enter Password</h2>
+    <div class="modal__content" @click.stop>
+      <h2>Введите пароль</h2>
       <input type="password" v-model="password" placeholder="Password" />
-      <button @click="submitPassword">Submit</button>
+      <button class="modal__button" @click="submitPassword">Submit</button>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .modal {
   position: fixed;
   top: 0;
@@ -38,10 +38,19 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  &__content {
+    background-color: #00000090;
+    padding: 20px;
+    border-radius: 20px;
+  }
+  &__button {
+    width: 100px;
+    height: 40px;
+  }
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #00000090;
   padding: 20px;
   border-radius: 4px;
 }

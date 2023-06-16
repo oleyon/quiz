@@ -26,8 +26,6 @@ const store = createStore({
         // Clear authentication state
         commit('logout');
       } catch (error) {
-        //console.log(error);
-        // Handle error if necessary
       }
     },
     async login({ commit }) {
@@ -39,7 +37,6 @@ const store = createStore({
           commit('logout');
         }
       } catch (error) {
-        // Handle error if necessary
         commit('logout');
       }
     }

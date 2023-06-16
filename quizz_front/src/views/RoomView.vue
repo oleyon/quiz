@@ -1,24 +1,30 @@
 <template>
-  <div>
-    <div>
-      <div v-if="isUserCreator">
-        <div>
-          Ссылка на вход: {{ getJoinLink() }}
+  <div class="central">
+    <h2>
+      Ссылка на вход: {{ getJoinLink() }}
+    </h2>
+    <div class="horizontal">
+      <div>
+        <div class="main1 quiz-body">
+          <div v-if="isUserCreator">
+            <CreatorPanel v-if="!hasQuizStarted" @quizStarted="startQuiz"/>
+          </div>
+          <QuizQuestion v-if="!isUserCreator && !hasQuizFinished && hasQuizStarted" :question="currentQuestion" @answerSelected="selectAnswer"/>
+          <h1 v-if="isOutOfQuestions && !hasQuizFinished && !isUserCreator">
+            Вы ответили на все вопросы
+          </h1>
+          <h1 v-if="hasQuizFinished">Квиз окончен!</h1>
+          <h2 v-if="hasQuizStarted">Осталось времени: {{ timeLeft }}</h2>
         </div>
-        <CreatorPanel v-if="!hasQuizStarted" @quizStarted="startQuiz"/>
       </div>
-      <div v-else>
-        <QuizQuestion :question="currentQuestion" @answerSelected="selectAnswer"/>
-        <div v-if="isOutOfQuestions">
-          Вы ответили на все вопросы
-        </div>
-        <div v-if="hasQuizStarted">Осталось времени: {{ timeLeft }}</div>
+      <div class="main1 team-body">
+        <TeamInfo :teamUsers="getTeamInfo" @joinedTeam="joinTeam"/>
+        <button class="team-body__spectator-button" @click="joinSpectator" v-if="!hasQuizStarted">Стать наблюдателем</button>
       </div>
     </div>
-    <div>
-      <TeamInfo :teamUsers="getTeamInfo" @joinedTeam="joinTeam"/>
-    </div>
-    <button @click="joinSpectator" v-if="!hasQuizStarted">Стать наблюдателем</button>
+
+
+
   </div>
 </template>
 
@@ -50,11 +56,6 @@ export default {
     },
     isUserCreator() {
       return this.$store.state.user?.id == this.roomInfo.userId;
-    },
-    isUserSpectator() {
-      const username = this.$store.state.user?.username;
-      const user = this.roomInfo.room_users.find(user => user.username === username);
-      return user && user.teamNumber == 0;
     },
     hasQuizStarted() {
       return this.roomInfo?.startTime ?? false
@@ -92,8 +93,14 @@ export default {
       // Retrieve room data every 2 seconds
       this.intervalId = setInterval(this.fetchRoomData, 2000);
     },
+    isUserSpectator() {
+      const username = this.$store.state.user?.username;
+      const user = this.roomInfo.room_users.find(user => user.username == username);
+      return user && user.teamNumber == 0;
+    },
     joinTeam(teamId) {
-      RoomDataService.joinTeam(teamId, this.roomId, this.password)
+      if(!this.isUserCreator)
+        RoomDataService.joinTeam(teamId, this.roomId, this.password)
     },
     joinSpectator() {
       this.joinTeam(0);
@@ -104,7 +111,9 @@ export default {
     selectAnswer(answer) {
       RoomDataService.sendAnswer(answer, this.roomId, this.password)
       .then(response => {
-        this.getCurrentQuestion()
+        this.currentQuestion = response.data
+        setTimeout(this.getCurrentQuestion, 1000)
+        //this.getCurrentQuestion()
       })
     },
     fetchRoomData() {
@@ -146,7 +155,6 @@ export default {
         if (this.currentQuestion == "") {
             this.isOutOfQuestionsV = true;
         }
-        console.log(`current question = ${this.currentQuestion?.questionText}`)
       })
       .catch(error => {
         console.log(error);
@@ -156,10 +164,31 @@ export default {
   watch: {
     hasQuizStarted(newVal) {
       if (newVal) {
-        if(!this.isUserSpectator)
+        if(!this.isUserSpectator())
+          this.getCurrentQuestion();
+      }
+    },
+    hasQuizFinished(newVal) {
+      if (newVal) {
+        if(!this.isUserSpectator())
           this.getCurrentQuestion();
       }
     }
   }
 };
 </script>
+
+<style lang="less" scoped>
+.quiz-body {
+  width: 70vw;
+  height: 75vh;
+}
+.team-body {
+  margin-left: 20px;
+  margin-right: auto;
+  &__spectator-button {
+    font-size: xx-large;
+  }
+  height: 75vh;
+}
+</style>

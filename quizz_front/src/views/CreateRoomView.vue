@@ -1,29 +1,35 @@
 <template>
-  <div>
+  <div class="main1 central level1">
     <h2>Создать комнату</h2>
     <form @submit.prevent="createRoom">
       <div>
-        <div>
+        <div class="room__caption">
           Название комнаты
         </div>
         <input type="text" v-model="title" placeholder="Название" required />
-        <div>
+        <div class="room__caption">
           Количество команд
         </div>
-        <input type="number" v-model="numberOfTeams" placeholder="кол-во команд" required />
-        <div>
+        <input type="number" v-model="numberOfTeams" placeholder="кол-во команд" required min="1"/>
+        <div class="room__caption">
           Время на выполнение квеста
         </div>
-        <input type="number" v-model="quizTime" placeholder="Длительность квиза (с)" required />
-        Пароль комнаты
+        <input type="number" v-model="quizTime" placeholder="Длительность квиза (с)" required min="1"/>
+        <div class="room__caption">
+          Пароль комнаты
+        </div>
         <input type="пароль" v-model="password" placeholder="Пароль (по желанию)"/>
       </div>
       <div>
-        <select v-model="selectedQuiz" required>
+        <div class="room__caption">
+          Выбор квиза
+        </div>
+        <select class="room__select" v-model="selectedQuiz" required>
           <option v-for="quiz in quizzes" :key="quiz.id" :value="quiz.id">{{ quiz.title }}</option>
         </select>
       </div>
-      <button type="submit">Создать комнату</button>
+      <br>
+      <button class="room__button" type="submit">Создать комнату</button>
     </form>
   </div>
 </template>
@@ -86,3 +92,23 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+@import "../../common_styles.less";
+.room {
+  &__input {
+    min-width: 400px;
+  }
+  &__caption {
+    font-size: 24px;
+    color: @title2;
+    padding-top: 20px;
+  }
+  &__select {
+    font-size: 24px;
+  }
+  &__button {
+    font-size: 32px;
+  }
+}
+</style>

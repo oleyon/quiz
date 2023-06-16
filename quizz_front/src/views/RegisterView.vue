@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Register</h2>
+  <div class="main1 central register">
+    <h1>Регистрация</h1>
     <form @submit.prevent="register">
       <input type="text" v-model="username" placeholder="Логин" required>
       <input type="text" v-model="name" placeholder="Имя" required>
@@ -16,7 +16,7 @@
       <p>{{ errorMessage }}</p>
     </div>
     <div v-else-if="responseStatus === 'success'">
-      <p>Успешная регистрация! Возврат на главную</p>
+      <h2>Успешная регистрация! Возврат на главную</h2>
     </div>
   </div>
 </template>
@@ -70,3 +70,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.register {
+  height: fit-content;
+  width: fit-content;
+  padding: 40px;
+}
+</style>

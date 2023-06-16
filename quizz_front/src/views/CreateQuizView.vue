@@ -1,13 +1,13 @@
 <template>
-  <div class="central main1">
+  <div class="central main1" style="height: 84vh;">
     <form @submit.prevent="createQuiz">
-      <div class="level1"
-      style="height: 9vh">
+      <div class="level2"
+      style="height: 10vh">
         <h2>Создать новый квиз</h2>
         <div>
-          <label>Название:</label>
-          <input type="text" v-model="title" required />
-          <label>Описание:</label>
+          <label style="margin-right: 10px;">Название:</label>
+          <input style="margin-right: 10px;" type="text" v-model="title" required />
+          <label style="margin-right: 10px;" >Описание:</label>
           <input type="text" v-model="description" required />
         </div>
       </div>
@@ -18,9 +18,9 @@
         <div
           v-for="(question, index) in questions"
           :key="index"
-          class="quiz__question-area level2"
+          class="quiz__question-area level3"
         >
-          <h2>Вопрос {{ index + 1 }}</h2>
+          <h1>Вопрос {{ index + 1 }}</h1>
           <input type="text" v-model="question.questionText" placeholder="Вопрос" required class="quiz__question" />
           <br>
           <input class="quiz__answer" type="text" v-model="question.answers[0].answerText" placeholder="Ответ 1" required />
@@ -29,7 +29,7 @@
           <input class="quiz__answer" type="text" v-model="question.answers[3].answerText" placeholder="Ответ 4" required />
           <br>
           <div class="quiz__answer-field">
-            <label class="quiz__label ">Правильный ответ:</label>
+            <label class="quiz__label">Правильный ответ:</label>
             <select v-model="question.correctAnswerIndex" required>
               <option value="0">Ответ 1</option>
               <option value="1">Ответ 2</option>
@@ -143,13 +143,16 @@ export default {
   }
 
   &__button {
-    width: 150px;
+    width: 170px;
     height: 30px;
     background-color: @div2;
     color: @text1;
     border: solid 2px @div1;
     border-radius: 8px;
     margin: 2px 7px 2px 7px;
+    &:hover {
+      background-color: @div3;
+    }
   }
 
   &__answer-field {

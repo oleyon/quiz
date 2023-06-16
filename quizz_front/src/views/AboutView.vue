@@ -1,15 +1,17 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="about central">
+    <h1>
+      Данный веб-сервис является проектом дипломной работы.
+      <br>
+      Преподаватели могут создвавать квизы, а также комнаты.
+      <br>
+      Студенты могут присоединяться к комнатам и играть в командах.
+    </h1>
   </div>
 </template>
 
+<script>
+</script>
+
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
 </style>
