@@ -3,7 +3,7 @@
     <div v-for="team in getTeams" :key="team.teamNumber">
       <h1 style="cursor: pointer;" @click="joinTeam(team.teamNumber)">Команда {{ team.teamNumber }}</h1>
       <ul>
-        <li class="student-info" v-for="user in team.users" :key="user">{{ user.username }} - {{ user.score }}</li>
+        <li class="student-info" v-for="user in team.users" :key="user">{{ user.surname }} {{ user.name }} - {{ user.score }}</li>
       </ul>
       <h3>Итоговый счет: {{ team.totalScore }}</h3>
       <br>

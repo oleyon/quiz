@@ -25,7 +25,7 @@ exports.getRoomData = async (req, res) => {
     const password = req.query.password;
     const room = await Room.findOne({
       where: {id: roomId},
-      include: [{ model: db.roomUser, attributes: ['score', 'teamNumber', 'currentQuestion'], include: [{ model: db.user, attributes: ['username']}] }]
+      include: [{ model: db.roomUser, attributes: ['score', 'teamNumber', 'currentQuestion'], include: [{ model: db.user, attributes: ['username', 'name', 'surname']}] }]
     })//(await Room.findByPk(roomId));
     if (!room) {
       return res.status(404).json({ message: 'Комната не найдена' });

@@ -31,7 +31,7 @@ const actions = {
     }
     teamUsers.forEach((teamUser) => {
       const { score, teamNumber, user } = teamUser;
-      const { username } = user;
+      const { username, surname, name } = user;
       if(teamNumber>0) {
         let team = teams.find((t) => t.teamNumber === teamNumber);
         if (!team) {
@@ -43,7 +43,7 @@ const actions = {
           teams.push(team);
         }
     
-        team.users.push({ username, score });
+        team.users.push({ name, surname, username, score });
         team.totalScore += score;
       }
     });

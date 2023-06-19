@@ -18,6 +18,10 @@ const store = createStore({
       state.user = null;
     }
   },
+  getters: {
+    getUser: (state) => state.user,
+    isAuthenticated: (state) => state.isAuthenticated
+  },
   actions: {
     async logout({ commit }) {
       try {

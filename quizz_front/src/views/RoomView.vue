@@ -1,6 +1,6 @@
 <template>
   <div class="central">
-    <h2>
+    <h2 v-if="isUserCreator">
       Ссылка на вход: {{ getJoinLink() }}
     </h2>
     <div class="horizontal">
