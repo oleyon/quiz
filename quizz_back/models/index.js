@@ -33,6 +33,7 @@ db.answer = require('./answer.model.js')(sequelize, Sequelize);
 
 db.room = require('./room.model.js')(sequelize, Sequelize);
 db.roomUser = require('./roomUser.model.js')(sequelize, Sequelize);
+db.userRole = require('./userRole.model.js')(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
