@@ -109,6 +109,7 @@ export default {
   }
   &__button {
     font-size: 32px;
+    background-color: @button1bg;
   }
 }
 </style>

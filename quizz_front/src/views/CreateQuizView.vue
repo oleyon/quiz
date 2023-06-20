@@ -145,7 +145,7 @@ export default {
   &__button {
     width: 170px;
     height: 30px;
-    background-color: @div2;
+    background-color: @button1bg;
     color: @text1;
     border: solid 2px @div1;
     border-radius: 8px;

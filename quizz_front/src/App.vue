@@ -102,8 +102,12 @@ nav a {
   background: @bg1;
 }
 .header__username {
-  font: 24px bold;
-  color: #579432;
+  font: 26px bold;
+  font-weight: bold;
+  text-decoration: underline;
+  color: @accent1;
+  font-stretch: narrower;
+  margin-top: -5px;
 }
 .header{
     background: @bg2;
