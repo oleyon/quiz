@@ -4,7 +4,6 @@
       <nav>
         <div class="left-links">
           <RouterLink class="router-link" to="/">Главная</RouterLink>
-          <RouterLink class="router-link" to="/about">О сайте</RouterLink>
         </div>
         
         <div class="right-links">
