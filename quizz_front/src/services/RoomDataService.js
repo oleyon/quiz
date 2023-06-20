@@ -25,7 +25,9 @@ class RoomDataService {
   getActiveRooms() {
     return http.get(`/room/getactiverooms`);
   }
-
+  setTeamName(teamName, roomId, password) {
+    return http.post(`/room/${roomId}/setteamname`, {teamName: teamName}, { params: { password: password }, withCredentials: true });
+  }
   // isUserCreator(roomId) {
   //   return http.get(`/room/${roomId}/isUserCreator`, {withCredentials: true });
   // }

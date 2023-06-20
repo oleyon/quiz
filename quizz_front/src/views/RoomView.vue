@@ -19,7 +19,12 @@
       </div>
       <div class="main1 team-body">
         <TeamInfo :teamUsers="getTeamInfo" @joinedTeam="joinTeam"/>
-        <button class="team-body__spectator-button" @click="joinSpectator" v-if="!hasQuizStarted">Стать наблюдателем</button>
+        <div class="buttons">
+          <button class="team-body__spectator-button" v-if="!isEditing && !isUserCreator && !hasQuizStarted" @click="editTeamName">Изменить название</button>
+          <input v-model="editName" v-if="isEditing" @blur="saveTeamName()" @keyup.enter="saveTeamName()"
+        />
+          <button class="team-body__spectator-button" @click="joinSpectator" v-if="!hasQuizStarted">Стать наблюдателем</button>
+        </div>
       </div>
     </div>
 
@@ -47,7 +52,9 @@ export default {
       roomInfo: {},
       currentQuestion: {},
       isOutOfQuestionsV: false,
-      timeLeft: 0
+      timeLeft: 0,
+      isEditing: false,
+      editName: ""
     };
   },
   computed: {
@@ -85,7 +92,15 @@ export default {
     clearInterval(this.intervalId)
   },
   methods: {
-    ...mapActions('team', ['updateTeams', 'updateNumberOfTeams']),
+    ...mapActions('team', ['setRoomData']),
+    editTeamName() {
+      this.isEditing = true;
+    },
+    saveTeamName() {
+      // TODO
+      RoomDataService.setTeamName(this.editName, this.roomId, this.password);
+      this.isEditing = false;
+    },
     async getRoomData() {
       // Retrieve room data initially
       this.fetchRoomData();
@@ -95,15 +110,23 @@ export default {
     },
     isUserSpectator() {
       const username = this.$store.state.user?.username;
-      const user = this.roomInfo.room_users.find(user => user.username == username);
-      return user && user.teamNumber == 0;
+      const roomInfo = this.roomInfo;
+      const user = roomInfo.teams.reduce((foundUser, team) => {
+        const userInTeam = team.room_users.find(user => user.user.username === username);
+        if (userInTeam) {
+          return userInTeam;
+        }
+        return foundUser;
+      }, null);
+      
+      return user == null;
     },
     joinTeam(teamId) {
       if(!this.isUserCreator)
         RoomDataService.joinTeam(teamId, this.roomId, this.password)
     },
     joinSpectator() {
-      this.joinTeam(0);
+      this.joinTeam(null);
     },
     startQuiz() {
       RoomDataService.startQuiz(this.roomId)
@@ -124,7 +147,7 @@ export default {
           // Handle the response from the backend
           this.roomInfo = response.data;
           //console.log(this.roomInfo) // REMOVE
-          this.updateTeams({teamUsers: this.roomInfo.room_users, teamsCount: this.roomInfo.numberOfTeams});
+          this.setRoomData(this.roomInfo);
 
           // Calculate and update timeLeft
           if (this.roomInfo.startTime) {
@@ -190,5 +213,12 @@ export default {
     font-size: xx-large;
   }
   height: 75vh;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  text-align: center;
+  margin: auto;
 }
 </style>

@@ -1,9 +1,16 @@
 <template>
   <div class="teams">
-    <div v-for="team in getTeams" :key="team.teamNumber">
-      <h1 style="cursor: pointer;" @click="joinTeam(team.teamNumber)">Команда {{ team.teamNumber }}</h1>
+    <div v-for="team in getRoomData?.teams" :key="team.teamId">
+      <h1 style="cursor: pointer;" @dblclick="toggleEditTeamName(team)"
+        v-if="!team.editable" @click="joinTeam(team.id)">{{ team.name }}</h1>
+        <input
+          v-model="team.name"
+          v-if="team.editable"
+          @blur="saveTeamName(team)"
+          @keyup.enter="saveTeamName(team)"
+        />
       <ul>
-        <li class="student-info" v-for="user in team.users" :key="user">{{ user.surname }} {{ user.name }} - {{ user.score }}</li>
+        <li class="student-info" v-for="user in team.room_users" :key="user">{{ user.user.surname }} {{ user.user.name }} - {{ user.score }}</li>
       </ul>
       <h3>Итоговый счет: {{ team.totalScore }}</h3>
       <br>
@@ -13,14 +20,22 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import RoomDataService from '../services/RoomDataService';
 
 export default {
   computed: {
-    ...mapGetters('team', ['getTeams']),
+    ...mapGetters('team', ['getRoomData']),
   },
   methods: {
     joinTeam(teamId) {
       this.$emit('joined-team', teamId);
+    },
+    toggleEditTeamName(team) {
+      team.editable = true;
+    },
+    saveTeamName(team) {
+      team.editable = false;
+      RoomDataService.saveTeamName(team.id, team.name, this.getRoomData.id, this.getRoomData.password)
     }
   },
 };
@@ -34,7 +49,7 @@ export default {
 }
 .teams {
   overflow-y: scroll;
-  height: 90%;
+  height: 85%;
   margin-bottom: 10px;
 }
 </style>

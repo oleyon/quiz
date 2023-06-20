@@ -63,4 +63,11 @@ module.exports = function(app) {
     ],
     controller.startQuiz
   );
+  app.post(
+    "/api/room/:roomId/setteamname",
+    [
+      authJwt.verifyToken
+    ],
+    controller.setTeamName
+  );
 };

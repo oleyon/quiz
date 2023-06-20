@@ -1,57 +1,31 @@
 const state = {
-  teams: [],
-  numberOfTeams: 0
+  roomData: null
 };
 
 const getters = {
-  getTeams: (state) => state.teams,
-  getNumberOfTeams: (state) => state.numberOfTeams,
+  getRoomData: (state) => state.roomData
 };
 
 const mutations = {
-  setTeams: (state, teams) => {
-    state.teams = teams;
-  },
-  setNumberOfTeams: (state, numberOfTeams) => {
-    state.numberOfTeams = numberOfTeams;
+  setRoomData(state, roomData) {
+    state.roomData = roomData;
+    // Calculate total score for each team
+    if (roomData && roomData.teams) {
+      roomData.teams.forEach((team) => {
+        let totalScore = 0;
+        team.room_users.forEach((user) => {
+          totalScore += user.score;
+        });
+        team.totalScore = totalScore;
+      });
+    }
   }
 };
 
 const actions = {
-  updateTeams: ({ commit }, { teamUsers, teamsCount }) => {
-    let teams = [];
-  
-    for (let i = 0; i < teamsCount; i++) {
-      let team = {
-        teamNumber: i + 1,
-        users: [],
-        totalScore: 0,
-      };
-      teams.push(team);
-    }
-    teamUsers.forEach((teamUser) => {
-      const { score, teamNumber, user } = teamUser;
-      const { username, surname, name } = user;
-      if(teamNumber>0) {
-        let team = teams.find((t) => t.teamNumber === teamNumber);
-        if (!team) {
-          team = {
-            teamNumber,
-            users: [],
-            totalScore: 0,
-          };
-          teams.push(team);
-        }
-    
-        team.users.push({ name, surname, username, score });
-        team.totalScore += score;
-      }
-    });
-
-    commit('setTeams', teams);
+  setRoomData({ commit }, roomData) {
+    commit('setRoomData', roomData);
   }
-  
-  
 };
 
 export default {

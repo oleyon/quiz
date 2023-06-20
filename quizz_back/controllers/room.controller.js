@@ -1,6 +1,7 @@
 const db = require("../models");
 const Room = db.room
 const User = db.user
+const Team = db.team
 exports.create = async (req, res) => {
   try {
     const roomreq = req.body;
@@ -12,6 +13,13 @@ exports.create = async (req, res) => {
       roomreq.quizTime = 60;
     }
     const room = await Room.create(roomreq);
+    const teams = [];
+    for (let i = 0; i < roomreq.numberOfTeams; i++) {
+      const team = await Team.create({ name: `Команда ${i + 1}` });
+      teams.push(team);
+    }
+    // Associate the teams with the room
+    await room.addTeams(teams);
     res.status(201).json({data: room, message: 'Комната успешно создана' });
   } catch (error) {
     console.error(error);
@@ -25,8 +33,25 @@ exports.getRoomData = async (req, res) => {
     const password = req.query.password;
     const room = await Room.findOne({
       where: {id: roomId},
-      include: [{ model: db.roomUser, attributes: ['score', 'teamNumber', 'currentQuestion'], include: [{ model: db.user, attributes: ['username', 'name', 'surname']}] }]
-    })//(await Room.findByPk(roomId));
+      include: [
+        {
+          model: db.team,
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: db.roomUser,
+              attributes: ['score', 'currentQuestion'],
+              include: [
+                {
+                  model: db.user,
+                  attributes: ['username', 'name', 'surname']
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    });
     if (!room) {
       return res.status(404).json({ message: 'Комната не найдена' });
     }
@@ -58,7 +83,7 @@ exports.joinRoom = async (req, res) => {
       where: { userId: userId, roomId: roomId },
     });
     if(!userRoom) {
-      userRoom = await user.addRoom(room, { through: {score: 0, teamNumber: 0, currentQuestion: 0} })
+      userRoom = await user.addRoom(room, { through: {score: 0, teamId: null, currentQuestion: 0} })
     }
     res.status(200).json({ message: 'Пользователь присоединился к комнате' });
   } catch (error) {
@@ -94,7 +119,7 @@ exports.getCurrentQuestion = async (req, res) => {
     const userRoom = await db.roomUser.findOne({
       where: { userId: userId, roomId: roomId },
     });
-    if (userRoom.teamNumber == 0) {
+    if (userRoom.teamId == null) {
       return res.status(200).json()
     }
     if (!userRoom) {
@@ -174,7 +199,10 @@ exports.sendAnswer = async (req, res) => {
 
 exports.joinTeam = async (req, res) => {
   try {
-    const { roomId, teamId } = req.params;
+    let { roomId, teamId } = req.params;
+    if (teamId == 'null') {
+      teamId = null;
+    }
     const password = req.query.password;
     const userId = req.userId;
     const user = await User.findByPk(userId)
@@ -185,15 +213,16 @@ exports.joinTeam = async (req, res) => {
     if (room.password && password !== room.password) {
       return res.status(401).json({ message: 'Неправильный пароль для комнаты' });
     }
+    
     const userRoom = await db.roomUser.findOne({
       where: { userId: userId, roomId: roomId },
     });
     // TODO
     if(!userRoom) {
-      userRoom = await user.addRoom(room, { through: {score: 0, teamNumber: 0, currentQuestion: 0} })
+      userRoom = await user.addRoom(room, { through: {score: 0, teamId: null, currentQuestion: 0} })
     }
     if(room.startTime == null) {
-      userRoom.update({teamNumber: teamId}, {
+      userRoom.update({teamId: teamId}, {
         where: {
           userId: userId,
           roomId: roomId
@@ -247,6 +276,28 @@ exports.startQuiz = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Failed to start the quiz' });
+  }
+};
+
+exports.setTeamName = async (req, res) => {
+  try {
+    //const { teamId } = req.params;
+    const { roomId } = req.params;
+    const { teamName } = req.body;
+    const userId = req.userId;
+    const roomUser = await db.roomUser.findOne({where: {userId: userId, roomId: roomId}});
+    console.log(roomUser)
+    const team = await Team.findByPk(roomUser.teamId);
+    if (!team) {
+      return res.status(404).json({ message: 'Команда не найдена' });
+    }
+
+    await team.update({ name: teamName });
+
+    res.status(200).json({ message: 'Название команды успешно изменено' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Не удалось изменить название команды' });
   }
 };
 

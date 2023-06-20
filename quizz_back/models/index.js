@@ -34,6 +34,7 @@ db.answer = require('./answer.model.js')(sequelize, Sequelize);
 db.room = require('./room.model.js')(sequelize, Sequelize);
 db.roomUser = require('./roomUser.model.js')(sequelize, Sequelize);
 db.userRole = require('./userRole.model.js')(sequelize, Sequelize);
+db.team = require('./team.model.js')(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -79,5 +80,11 @@ db.quiz.hasOne(db.room)
 db.room.belongsTo(db.quiz)
 
 db.ROLES = ["user", "admin", "moderator"];
+
+
+db.team.hasMany(db.roomUser);
+db.roomUser.belongsTo(db.team, { allowNull: true });
+db.room.hasMany(db.team);
+db.team.belongsTo(db.room);
 
 module.exports = db;
