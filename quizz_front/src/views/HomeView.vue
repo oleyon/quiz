@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="central">Сайт квизов</h1>
+    <h1 class="central">Сервис для проведения интеллектуально-развлекательных мероприятий</h1>
     <div class="central level1 horizontal">
       <ActiveRooms></ActiveRooms>
       <UserInfo></UserInfo>

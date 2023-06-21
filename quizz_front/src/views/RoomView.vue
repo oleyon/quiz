@@ -106,7 +106,7 @@ export default {
       this.fetchRoomData();
 
       // Retrieve room data every 2 seconds
-      this.intervalId = setInterval(this.fetchRoomData, 2000);
+      this.intervalId = setInterval(this.fetchRoomData, 1000);
     },
     isUserSpectator() {
       const username = this.$store.state.user?.username;

@@ -43,8 +43,8 @@ export default {
 
 <style lang="less" scoped>
 .student-info {
-  color: #729b6c;
-  font-size: large;
+  color: #e3c70e;
+  font-size: x-large;
   list-style: none;
 }
 .teams {
